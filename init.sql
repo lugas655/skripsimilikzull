@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS member (
 INSERT INTO member (member_id, member_name, inst_name) VALUES
 ('20240101', 'Andi Wijaya', 'Teknik Informatika'),
 ('20240102', 'Budi Santoso', 'Sistem Informasi'),
-('20240103', 'Citra Lestari', 'Teknik Elektro')
+('22533645', 'Lugas Hermanto', 'Teknik Informatika')
 ON DUPLICATE KEY UPDATE 
     member_name = VALUES(member_name),
     inst_name = VALUES(inst_name);

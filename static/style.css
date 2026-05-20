@@ -1,0 +1,704 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --sidebar-bg-top: #1e3a8a;
+    --sidebar-bg-bottom: #172554;
+    --primary-blue: #3b82f6;
+    --primary-blue-hover: #2563eb;
+    --success-green: #10b981;
+    --accent-light: #eff6ff;
+    --border-color: #e2e8f0;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --card-bg: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: radial-gradient(ellipse at top left, #1d4ed8 0%, #1e3a8a 30%, #172554 65%, #0f172a 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--text-dark);
+}
+
+/* Decorative dots background on body */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#main-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    max-width: 1250px;
+    height: 86vh;
+    min-height: 640px;
+    background: var(--card-bg);
+    border-radius: 26px;
+    box-shadow: 0 40px 80px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+/* ===========================
+   SIDEBAR KIRI
+   =========================== */
+.sidebar {
+    width: 44%;
+    background: linear-gradient(175deg, #1e3a8a 0%, #1e3a8a 40%, #172554 100%);
+    color: white;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Radial glow on sidebar */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 2;
+}
+
+.logo-shield {
+    position: relative;
+    font-size: 2.6rem;
+    color: #60a5fa;
+    filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.5));
+}
+
+.inner-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    font-size: 1.1rem;
+    color: white;
+}
+
+.header-text h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.header-text p {
+    color: #93c5fd;
+    font-size: 0.68rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Camera Section */
+.camera-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 18px;
+    position: relative;
+}
+
+.camera-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.camera-title {
+    color: #e2e8f0;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.camera-status {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    padding: 5px 14px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    transition: all 0.3s;
+}
+
+.camera-status.success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
+}
+
+.camera-box {
+    flex: 1;
+    position: relative;
+    background: #000;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+}
+
+#videoElement,
+#img-result {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Scanning overlay */
+.scan-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.8), transparent);
+    animation: scanMove 2.5s linear infinite;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+}
+
+@keyframes scanMove {
+    0% {
+        top: 0%;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+/* Corner brackets */
+.corner {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-color: rgba(96, 165, 250, 0.8);
+    border-style: solid;
+}
+
+.corner.tl {
+    top: 14px;
+    left: 14px;
+    border-width: 2px 0 0 2px;
+    border-radius: 3px 0 0 0;
+}
+
+.corner.tr {
+    top: 14px;
+    right: 14px;
+    border-width: 2px 2px 0 0;
+    border-radius: 0 3px 0 0;
+}
+
+.corner.bl {
+    bottom: 14px;
+    left: 14px;
+    border-width: 0 0 2px 2px;
+    border-radius: 0 0 0 3px;
+}
+
+.corner.br {
+    bottom: 14px;
+    right: 14px;
+    border-width: 0 2px 2px 0;
+    border-radius: 0 0 3px 0;
+}
+
+/* Accuracy Badge - inside camera section, below camera-box */
+.accuracy-badge-container {
+    margin-top: 12px;
+    background: rgba(30, 58, 138, 0.95);
+    color: white;
+    padding: 10px 28px;
+    border-radius: 30px;
+    text-align: center;
+    border: 1px solid rgba(147, 197, 253, 0.3);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    align-self: center;
+    width: fit-content;
+}
+
+.acc-title {
+    font-size: 0.72rem;
+    color: #93c5fd;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.acc-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+/* Auth Status Box */
+#auth-status-box {
+    padding: 16px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1.5px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+    border-radius: 16px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* ===========================
+   MAIN CONTENT (KANAN)
+   =========================== */
+.main-content {
+    flex: 1;
+    padding: 44px 60px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    position: relative;
+}
+
+.top-bar {
+    position: absolute;
+    top: 36px;
+    right: 60px;
+}
+
+.date-time {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--accent-light);
+    padding: 11px 18px;
+    border-radius: 12px;
+    border: 1px solid #dbeafe;
+}
+
+.date-time i {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+}
+
+.dt-text {
+    font-size: 0.88rem;
+}
+
+.dt-text div:first-child {
+    font-weight: 700;
+    color: var(--sidebar-bg-top);
+}
+
+#current-time {
+    color: var(--primary-blue);
+    font-weight: 500;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--sidebar-bg-top);
+    margin-top: 48px;
+    margin-bottom: 36px;
+    position: relative;
+    padding-bottom: 14px;
+}
+
+.main-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 72px;
+    height: 5px;
+    background: var(--primary-blue);
+    border-radius: 6px;
+}
+
+/* Profile Card */
+.profile-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 26px;
+}
+
+.profile-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--accent-light);
+    color: var(--primary-blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.profile-header h3 {
+    color: var(--sidebar-bg-top);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.info-table td {
+    padding: 7px 0;
+    vertical-align: top;
+}
+
+.info-table .label {
+    color: var(--text-muted);
+    font-weight: 600;
+    width: 85px;
+}
+
+.info-table .colon {
+    color: #94a3b8;
+    text-align: center;
+    width: 22px;
+}
+
+.info-table strong {
+    color: var(--text-dark);
+    font-weight: 700;
+    word-break: break-word;
+    display: block;
+}
+
+/* Instruction Box */
+.instruction {
+    background: var(--accent-light);
+    border-left: 6px solid var(--primary-blue);
+    border-radius: 16px;
+    padding: 22px 26px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.info-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.info-text {
+    color: var(--sidebar-bg-top);
+    line-height: 1.65;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Reset Button */
+.btn-reset {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 20px;
+    border-radius: 16px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.25s;
+    margin-top: auto;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+    font-family: inherit;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.btn-reset:hover {
+    background: var(--primary-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(59, 130, 246, 0.4);
+}
+
+.btn-reset:active {
+    transform: translateY(1px);
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 900px) {
+    #main-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .camera-section {
+        height: 380px; /* Dipertinggi sedikit agar layout nyaman */
+    }
+
+    .camera-box {
+        height: 280px; /* Tentukan tinggi pasti agar tidak kolaps 0px di HP */
+        position: relative;
+    }
+
+    .main-content {
+        padding: 36px 28px;
+    }
+
+    .top-bar {
+        position: static;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .main-title {
+        margin-top: 10px;
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0;
+    }
+
+    #main-container {
+        border-radius: 0;
+    }
+
+    .main-content {
+        padding: 24px 18px;
+    }
+
+    .sidebar {
+        padding: 24px 18px;
+    }
+
+    .camera-section {
+        height: 320px; /* Sesuai ukuran layar HP kecil */
+    }
+
+    .camera-box {
+        height: 220px; /* Pastikan tetap terlihat proporsional di HP kecil */
+    }
+
+    .main-title {
+        font-size: 1.7rem;
+    }
+}
+
+/* ===========================
+   CAMERA ADDITIONS (ROTATION & ERROR STATE)
+   =========================== */
+.btn-switch-cam {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #f1f5f9;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    padding: 0;
+}
+
+.btn-switch-cam:hover {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: white;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+    transform: scale(1.1) rotate(15deg);
+}
+
+.btn-switch-cam:active {
+    transform: scale(0.92);
+}
+
+.camera-error-container {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.95);
+    color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    z-index: 25;
+    backdrop-filter: blur(4px);
+}
+
+.camera-error-container i.error-icon {
+    font-size: 2.5rem;
+    color: #ef4444;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
+    animation: pulseError 2s infinite;
+}
+
+.camera-error-container h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #f87171;
+    letter-spacing: 0.5px;
+}
+
+.camera-error-container p {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    max-width: 280px;
+}
+
+.btn-retry {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-hover) 100%);
+    border: none;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    font-family: inherit;
+}
+
+.btn-retry:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.45);
+}
+
+.btn-retry:active {
+    transform: translateY(1px);
+}
+
+@keyframes pulseError {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.08);
+        opacity: 0.85;
+    }
+}
+
+/* ===========================
+   WAJAH TIDAK DIKENALI (DANGER/WARNING STATES)
+   =========================== */
+.camera-status.danger {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #f87171 !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.35) !important;
+}
+
+.instruction.danger {
+    background: #fef2f2 !important;
+    border-left-color: #ef4444 !important;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.05);
+}
+
+.instruction.danger .info-icon {
+    background: #ef4444 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+}
+
+.instruction.danger .info-text {
+    color: #991b1b !important;
+}

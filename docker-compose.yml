@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Layanan Database MySQL
+  db:
+    image: mysql:8.0
+    container_name: perpustakaan_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rahasia_db_123  # Ubah sesuai dengan password yang Anda inginkan
+      MYSQL_DATABASE: perpustakaan
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Layanan Backend Flask (Face Recognition API)
+  app:
+    build: .
+    container_name: absensi_app
+    restart: always
+    ports:
+      - "5001:5001"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rahasia_db_123  # Sesuaikan dengan password database di atas
+      - DB_DATABASE=perpustakaan
+      - PORT=5001
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:

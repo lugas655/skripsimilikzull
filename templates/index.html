@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kios Mandiri Perpustakaan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../static/style.css?v=17">
+</head>
+
+<body>
+    <div id="main-container">
+        <!-- Panel Kiri (Sidebar Biru) -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-shield">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <i class="fa-solid fa-user-secret inner-icon"></i>
+                </div>
+                <div class="header-text">
+                    <h1>UMPO</h1>
+                    <p>ZULFIQLI SEDANG MEMASAK</p>
+                </div>
+            </div>
+
+            <div class="camera-section" style="min-height: 280px;">
+                <div class="camera-header">
+                    <div class="camera-title">
+                        <i class="fa-solid fa-camera"></i> Deteksi Wajah
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button id="switch-camera-btn" class="btn-switch-cam" title="Ganti Kamera">
+                            <i class="fa-solid fa-camera-rotate"></i>
+                        </button>
+                        <div class="camera-status" id="cam-status-badge">Memindai...</div>
+                    </div>
+                </div>
+                <div class="camera-box" style="min-height: 220px; position: relative;">
+                    <video id="videoElement" autoplay playsinline muted></video>
+                    <canvas id="canvasElement" style="display:none;"></canvas>
+                    
+                    <!-- Container Error Kamera -->
+                    <div id="camera-error" class="camera-error-container" style="display: none;">
+                        <i class="fa-solid fa-circle-exclamation error-icon"></i>
+                        <h4>Kamera Tidak Aktif</h4>
+                        <p id="camera-error-msg">Silakan periksa izin kamera atau pastikan Anda menggunakan koneksi aman (HTTPS).</p>
+                        <button id="retry-camera-btn" class="btn-retry">Coba Lagi</button>
+                    </div>
+
+                    <!-- Overlay scanning animasi -->
+                    <div class="scan-overlay" id="scan-overlay">
+                        <div class="scan-line"></div>
+                        <div class="corner tl"></div>
+                        <div class="corner tr"></div>
+                        <div class="corner bl"></div>
+                        <div class="corner br"></div>
+                    </div>
+                </div>
+                <div class="accuracy-badge-container" id="accuracy-badge" style="display:none;">
+                    <div class="acc-title">Akurasi</div>
+                    <div class="acc-value" id="acc-value-text">0%</div>
+                </div>
+            </div>
+
+            <div id="auth-status-box" style="display:none;">
+                <i class="fa-solid fa-circle-check"></i> TERVERIFIKASI
+            </div>
+        </div>
+
+        <!-- Panel Kanan (Konten Utama) -->
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="date-time">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <div class="dt-text">
+                        <div id="current-date">24 Mei 2024</div>
+                        <div id="current-time">10:24 WIB</div>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="main-title">Layanan Mandiri</h1>
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3>PROFIL MAHASISWA</h3>
+                </div>
+                <table class="info-table">
+                    <tr>
+                        <td class="label">NIM</td>
+                        <td class="colon">:</td>
+                        <td><strong id="nim-val">-</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label">NAMA</td>
+                        <td class="colon">:</td>
+                        <td><strong id="nama-val">-</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label">PRODI</td>
+                        <td class="colon">:</td>
+                        <td><strong id="inst-val">-</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Struk Peminjaman -->
+            <div id="receipt-box" style="display:none;" class="profile-card receipt-card">
+                <h3 style="color:#059669; text-align:center; margin-bottom:15px;">
+                    <i class="fa-solid fa-check-circle"></i> Peminjaman Berhasil
+                </h3>
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Buku</td>
+                        <td class="colon">:</td>
+                        <td><strong id="rec-buku">-</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Pinjam</td>
+                        <td class="colon">:</td>
+                        <td><strong id="rec-pinjam">-</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Kembali</td>
+                        <td class="colon">:</td>
+                        <td><strong id="rec-kembali">-</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="instruction" id="main-instruction">
+                <div class="info-icon">
+                    <i class="fa-solid fa-info"></i>
+                </div>
+                <div class="info-text">
+                    Berdiri di depan kamera untuk verifikasi.<br>
+                    Data Anda akan otomatis terkirim ke komputer petugas.
+                </div>
+            </div>
+
+            <button id="reset-btn" class="btn btn-reset">
+                <i class="fa-solid fa-expand"></i> SELESAI / SCAN ULANG
+            </button>
+        </div>
+    </div>
+    <script src="../static/script.js?v=17"></script>
+</body>
+
+</html>

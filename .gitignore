@@ -1,0 +1,28 @@
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Database / Local Configuration
+.env
+*.db
+*.sqlite
+
+# Large Model Weights (Optional - Uncomment if you do not want to upload large model files)
+# medium.pt
+# *.pkl

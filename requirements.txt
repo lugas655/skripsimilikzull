@@ -1,0 +1,10 @@
+flask
+flask-cors
+mysql-connector-python
+opencv-python-headless
+numpy
+torch
+torchvision
+ultralytics
+facenet-pytorch
+joblib

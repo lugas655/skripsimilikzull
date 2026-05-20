@@ -1,5 +1,5 @@
 -- ==========================================
--- FILE MIGRASI & SEEDER ABSENSI PERPUSTAKAAN
+-- FILE MIGRASI & SEEDER  PERPUSTAKAAN
 -- ==========================================
 
 -- Buat database jika belum ada
@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS member (
 -- CATATAN: Silakan sesuaikan/tambahkan NIM (member_id) di bawah ini
 -- agar cocok dengan wajah-wajah yang Anda daftarkan pada SVM model Anda!
 INSERT INTO member (member_id, member_name, inst_name) VALUES
-('20240101', 'Andi Wijaya', 'Teknik Informatika'),
-('20240102', 'Budi Santoso', 'Sistem Informasi'),
+('22533647', 'Andi Wijaya', 'Teknik Informatika'),
+('22533646', 'Zulfiqli Kurniawan', 'Teknik Informatika'),
 ('22533645', 'Lugas Hermanto', 'Teknik Informatika')
 ON DUPLICATE KEY UPDATE 
     member_name = VALUES(member_name),

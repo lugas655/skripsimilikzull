@@ -8,3 +8,4 @@ torchvision
 ultralytics
 facenet-pytorch
 joblib
+scikit-learn
